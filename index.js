@@ -15,6 +15,38 @@ app.post("/users", async (req, res) => {
   }
 });
 
+app.put("/users", async (req, res) => {
+  try {
+    const user = await User.update(
+      {
+        name: "John Doe",
+        email: "john@example.com",
+      },
+      {
+        where: { id: req.body.id },
+      }
+    );
+    res.status(200).json({
+      message: "Update success!",
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+app.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.destroy({
+      where: { id: id },
+    });
+    res.status(200).json({
+      message: "Delete success!",
+    });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
 // Get all users
 app.get("/users", async (req, res) => {
   try {
